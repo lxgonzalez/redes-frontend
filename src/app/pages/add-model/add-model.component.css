@@ -9,12 +9,13 @@
 }
 
 .container > div:nth-child(2){
+  margin: auto 30px;
   padding-left: 20px;
   flex:1;
 }
 
 .full-width {
-  width: 90%;
+  width: 100%;
 }
 
 td {

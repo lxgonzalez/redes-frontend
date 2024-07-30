@@ -1,72 +1,49 @@
 <div class="container">
-  <div id="map"></div>
+<div id="map" style="height: 500px;"></div>
   <div>
     <mat-toolbar>
       <span>Personaliza tu viaje</span>
       <span class="spacer"></span>
-      <button mat-button routerLink="add-model">
-        <span>Add</span>
-        <mat-icon>add</mat-icon>
-      </button>
-
     </mat-toolbar>
-
-    @if(statusStart()){
       <mat-form-field class="full-width">
-        <mat-label>Salida</mat-label>
-        <input matInput value="{{start().latitud}} / {{start().longitud}}">
+      <mat-label for="sourceNode">Nodo de Origen</mat-label>
+      <mat-select id="sourceNode" (change)="selectSourceNode($event)">
+        @for (n of nodes(); track n){
+          <mat-option [value]="n.latlng">{{ n.address }}</mat-option>
+        }
+      </mat-select>
       </mat-form-field>
-      <button mat-icon-button class="check" (click)="statusStart.set(!statusStart())">
-        <mat-icon>check</mat-icon>
-      </button>
-    } @else {
       <mat-form-field class="full-width">
-        <mat-label>Salida</mat-label>
-        <input disabled matInput value="{{start().latitud}} / {{start().longitud}}">
+      <mat-label for="destinationNode">Nodo de Destino</mat-label>
+      <mat-select id="destinationNode" (change)="selectDestinationNode($event)">
+        @for (n of nodes(); track n){
+          <mat-option [value]="n.latlng">{{ n.address }}</mat-option>
+        }
+      </mat-select>
       </mat-form-field>
-      <button mat-icon-button class="close" (click)="statusStart.set(!statusStart())">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-
-    @if(statusEnd()){
-      <mat-form-field class="full-width">
-        <mat-label>Llegada</mat-label>
-        <input matInput value="{{end().latitud}} / {{end().longitud}}">
-      </mat-form-field>
-      <button mat-icon-button class="check" (click)="statusEnd.set(!statusEnd())">
-        <mat-icon>check</mat-icon>
-      </button>
-    } @else {
-      <mat-form-field class="full-width">
-        <mat-label>Llegada</mat-label>
-        <input disabled matInput value="{{end().latitud}} / {{end().longitud}}">
-      </mat-form-field>
-      <button mat-icon-button class="close" (click)="statusEnd.set(!statusEnd())">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-
-      <mat-table [dataSource]="dataSource" >
-
-        <ng-container matColumnDef="parada1">
-          <mat-header-cell *matHeaderCellDef> Nodo Origen </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="parada2">
-          <mat-header-cell *matHeaderCellDef> Nodo Destino </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="distancia">
-          <mat-header-cell *matHeaderCellDef> Distancia </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
+      <button mat-raised-button (click)="imprimir()">Calcular Ruta Más Corta</button>
 
   </div>
 </div>
+<mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="parada1">
+    <mat-header-cell *matHeaderCellDef> Nodo Origen </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.start.address}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="parada2">
+    <mat-header-cell *matHeaderCellDef> Nodo Destino </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.end.address}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="distancia">
+    <mat-header-cell *matHeaderCellDef> Distancia </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.distance}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<button mat-button (click)="imprimir()">Imprimir</button>
+
