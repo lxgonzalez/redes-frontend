@@ -7,21 +7,21 @@
     </mat-toolbar>
       <mat-form-field class="full-width">
       <mat-label for="sourceNode">Nodo de Origen</mat-label>
-      <mat-select id="sourceNode" (change)="selectSourceNode($event)">
+      <mat-select id="sourceNode" [(ngModel)]="sourceNode">
         @for (n of nodes(); track n){
-          <mat-option [value]="n.latlng">{{ n.address }}</mat-option>
+          <mat-option [value]="n">{{ n.address }}</mat-option>
         }
       </mat-select>
       </mat-form-field>
       <mat-form-field class="full-width">
       <mat-label for="destinationNode">Nodo de Destino</mat-label>
-      <mat-select id="destinationNode" (change)="selectDestinationNode($event)">
+      <mat-select id="destinationNode" [(ngModel)]="destinationNode">
         @for (n of nodes(); track n){
-          <mat-option [value]="n.latlng">{{ n.address }}</mat-option>
+          <mat-option [value]="n">{{ n.address }}</mat-option>
         }
       </mat-select>
       </mat-form-field>
-      <button mat-raised-button (click)="imprimir()">Calcular Ruta Más Corta</button>
+      <button mat-raised-button (click)="buscarPython()">Calcular Ruta Más Corta</button>
 
   </div>
 </div>
@@ -45,5 +45,4 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-<button mat-button (click)="imprimir()">Imprimir</button>
 

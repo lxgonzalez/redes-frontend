@@ -1,0 +1,14 @@
+.container{
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 20px;
+}
+
+.container > div:nth-child(1){
+  flex: 1;
+}
+
+.container > div:nth-child(2){
+  flex:1;
+}

@@ -1,21 +1,31 @@
-export class Nodo{
-  constructor(lng: number, lat: number) {
-    this.longitud = lng;
-    this.latitud = lat;
-  }
-
-  latitud: number
-  longitud: number
-  nombre: string
-  distancia?: 0
+export class RouteData {
+  connections?: Connection[];
+  sourceNode?: Node;
+  destinationNode?: Node;
 }
 
-export class Graph {
-  [key: string]: { [key: string]: number };
+export class Connection {
+  start?: Node;
+  end?: Node;
+  distance: string;
 }
 
-export class ShortestPathRequest {
-  graph: Graph;
-  start: string;
-  end: string;
+export class Node {
+  latlng?: LatLng;
+  address?: string;
+}
+
+export class LatLng {
+  lat?: number;
+  lng?: number;
+}
+
+export class RutaCorta{
+  cost?: number
+  path?: Node[]
+}
+
+export class ArbolExpansion{
+  cost?: number
+  path?: Connection[]
 }
