@@ -182,18 +182,23 @@ export class AddModelComponent implements AfterViewInit{
       const rutaCortaRequest = this.http.post<RutaCorta>('http://localhost:5000/ruta-corta', this.routeData);
       const arbolExpansionRequest = this.http.post<ArbolExpansion>('http://localhost:5000/arbol-expansion', this.routeData);
 
-      // Use forkJoin to handle both requests
       forkJoin([rutaCortaRequest, arbolExpansionRequest]).subscribe(
         ([rutaCortaResponse, arbolExpansionResponse]) => {
-          // Process the RutaCorta response
-          this.rutaCorta.cost = rutaCortaResponse.cost;
-          this.rutaCorta.path = rutaCortaResponse.path;
-          this.rutacortaService.setRutaCorta(this.rutaCorta);
+          // Validate RutaCorta response
+          if (rutaCortaResponse && rutaCortaResponse.path && Array.isArray(rutaCortaResponse.path)) {
+            this.rutaCorta = rutaCortaResponse;
+            this.rutacortaService.setRutaCorta(this.rutaCorta);
+          } else {
+            console.error('Invalid RutaCorta response data:', rutaCortaResponse);
+          }
 
-          // Process the ArbolExpansion response
-          this.arbolExpansion.cost = arbolExpansionResponse.cost;
-          this.arbolExpansion.path = arbolExpansionResponse.path;
-          this.arbolService.setArbolExpansion(this.arbolExpansion);
+          // Validate ArbolExpansion response
+          if (arbolExpansionResponse && arbolExpansionResponse.path && Array.isArray(arbolExpansionResponse.path)) {
+            this.arbolExpansion = arbolExpansionResponse;
+            this.arbolService.setArbolExpansion(this.arbolExpansion);
+          } else {
+            console.error('Invalid ArbolExpansion response data:', arbolExpansionResponse);
+          }
 
           // Navigate to 'resultados'
           this.router.navigate(['resultados']);
@@ -205,4 +210,5 @@ export class AddModelComponent implements AfterViewInit{
       );
     }
   }
+
 }

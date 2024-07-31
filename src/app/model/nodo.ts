@@ -5,9 +5,9 @@ export class RouteData {
 }
 
 export class Connection {
+  distance: string;
   start?: Node;
   end?: Node;
-  distance: string;
 }
 
 export class Node {

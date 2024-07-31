@@ -107,25 +107,59 @@ export class ResultadosComponent implements OnInit{
   }
 
 
-  initMapArbol(){
+  initMapArbol() {
     this.mapArbol = L.map('mapArbol', {
-      center: [-0.22,-78.50],
+      center: [-0.22, -78.50],
       zoom: 14
-    })
+    });
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 50,
-      minZoom: 3,
+      maxZoom: 18,
+      minZoom: 3
     });
     tiles.addTo(this.mapArbol);
 
-    for(let i = 0; i < this.arbolExpansion.path.length; i++) {
-      let ruta = this.rutaCorta.path[i];
+    // Dibujar los nodos y conexiones del árbol de expansión
+    for (let i = 0; i < this.arbolExpansion.path.length; i++) {
+      const connection = this.arbolExpansion.path[i];
+      const startLatLng: [number, number] = [connection.start.latlng.lat, connection.start.latlng.lng];
+      const endLatLng: [number, number] = [connection.end.latlng.lat, connection.end.latlng.lng];
 
-      L.marker([ruta.latlng.lat, ruta.latlng.lng]).addTo(this.mapRutaCorta);
+      L.marker(startLatLng).addTo(this.mapArbol);
+      L.marker(endLatLng).addTo(this.mapArbol);
 
+      const routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(startLatLng[0], startLatLng[1]),
+          L.latLng(endLatLng[0], endLatLng[1])
+        ],
+        lineOptions: {
+          styles: [{ color: 'green', weight: 4 }],
+          extendToWaypoints: true,
+          missingRouteTolerance: 50
+        },
+        createMarker: (i, wp, nWps) => {
+          return null;
+        },
+        show: false,
+        collapsible: true,
+        fitSelectedRoutes: false
+      }).addTo(this.mapArbol);
     }
-
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
